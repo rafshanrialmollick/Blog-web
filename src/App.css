@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(70%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 15s linear infinite;
+  transition: cubic-bezier(0.075, 0.82, 0.165, 1);
+}
