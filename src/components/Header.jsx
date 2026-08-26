@@ -48,8 +48,59 @@
 // };
 
 // export default Header;
+// ------------------------------------------------------------------------------------------------------------
 
-import { NavLink } from "react-router";
+// import { NavLink } from "react-router-dom";
+
+// const navItems = [
+//   { to: "/", label: "Home" },
+//   { to: "/about", label: "About" },
+//   { to: "/blogs", label: "Blogs" },
+//   { to: "/contact", label: "Contact" },
+// ];
+
+// const Header = () => {
+//   const linkClass = ({ isActive }) =>
+//     `relative py-1 transition-colors duration-200 ${
+//       isActive ? "text-black" : "text-neutral-500 hover:text-black"
+//     } after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:bg-black after:transition-all after:duration-300 ${
+//       isActive ? "after:w-full" : "after:w-0 hover:after:w-full"
+//     }`;
+
+//   return (
+//     <header className="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-neutral-200 rounded-lg    ">
+//       <div className="max-w-6xl mx-auto flex items-center justify-between px-6 py-4   ">
+//         <NavLink to="/" className="flex items-center gap-3 group">
+//           <img
+//             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtmc3LOYy5_7izWb_-OG180hw2_uAL9g4kFYpB-dfZnQ&s=10"
+//             alt="logo"
+//             className="w-9 h-9 rounded-md object-cover"
+//           />
+//           <span className="text-xl font-serif font-bold tracking-tight text-black">
+//             My Blog
+//           </span>
+//         </NavLink>
+
+//         <nav className="hidden   md:flex  ">
+//           <ul className="flex gap-8 items-center text-sm font-medium">
+//             {navItems.map(({ to, label }) => (
+//               <li key={to}>
+//                 <NavLink to={to} className={linkClass}>
+//                   {label}
+//                 </NavLink>
+//               </li>
+//             ))}
+//           </ul>
+//         </nav>
+//       </div>
+//     </header>
+//   );
+// };
+
+// export default Header;
+
+import { useState } from "react";
+import { NavLink } from "react-router-dom";
 
 const navItems = [
   { to: "/", label: "Home" },
@@ -59,6 +110,8 @@ const navItems = [
 ];
 
 const Header = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
   const linkClass = ({ isActive }) =>
     `relative py-1 transition-colors duration-200 ${
       isActive ? "text-black" : "text-neutral-500 hover:text-black"
@@ -67,20 +120,23 @@ const Header = () => {
     }`;
 
   return (
-    <header className="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-neutral-200 rounded-lg ">
-      <div className="max-w-6xl mx-auto flex items-center justify-between px-6 py-4 ">
-        <NavLink to="/" className="flex items-center gap-3 group">
+    <header className="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-neutral-200 rounded-lg">
+      <div className="max-w-6xl mx-auto flex items-center justify-between px-6 py-4 relative">
+        {/* Logo */}
+        <NavLink to="/" className="flex items-center gap-3">
           <img
             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtmc3LOYy5_7izWb_-OG180hw2_uAL9g4kFYpB-dfZnQ&s=10"
             alt="logo"
             className="w-9 h-9 rounded-md object-cover"
           />
+
           <span className="text-xl font-serif font-bold tracking-tight text-black">
             My Blog
           </span>
         </NavLink>
 
-        <nav>
+        {/* Desktop Navbar */}
+        <nav className="hidden md:flex">
           <ul className="flex gap-8 items-center text-sm font-medium">
             {navItems.map(({ to, label }) => (
               <li key={to}>
@@ -91,6 +147,33 @@ const Header = () => {
             ))}
           </ul>
         </nav>
+
+        {/* Hamburger Button */}
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="md:hidden text-2xl text-black"
+        >
+          {isOpen ? "✕" : "☰"}
+        </button>
+
+        {/* Mobile Navbar */}
+        {isOpen && (
+          <nav className="bg-[#f1eded] z-30  absolute top-full left-58 rounded-md  w-30  border-b border-neutral-200 shadow-md   md:hidden">
+            <ul className="flex flex-col items-center gap-5 py-6 text-sm font-medium">
+              {navItems.map(({ to, label }) => (
+                <li key={to}>
+                  <NavLink
+                    to={to}
+                    className={linkClass}
+                    onClick={() => setIsOpen(false)}
+                  >
+                    {label}
+                  </NavLink>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        )}
       </div>
     </header>
   );

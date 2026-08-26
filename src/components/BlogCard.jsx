@@ -1,7 +1,9 @@
-const BlogCard = ({ blog }) => {
+const BlogCard = ({ blog, onClick }) => {
   return (
     <article>
-      <h2 className="font-bold text-2xl">{blog.title}</h2>
+      <h2 onClick={onClick} className="font-bold text-2xl cursor-pointer">
+        {blog.title}
+      </h2>
       <p>{blog.body}</p>
     </article>
   );

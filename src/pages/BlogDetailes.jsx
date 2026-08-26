@@ -39,7 +39,7 @@
 
 
 
-import { Link, useParams } from "react-router";
+import { Link, useParams } from "react-router-dom";
 import useBlogs from "../hook/useBlogs";
 
 const BlogDetailes = () => {

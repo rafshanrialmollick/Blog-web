@@ -27,20 +27,53 @@
 
 // export default Home;
 
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import BlogCard from "../components/BlogCard";
 import Marquee from "../components/Marquee";
 import useBlogs from "../hook/useBlogs";
 
 const Home = () => {
   const { blogs, loading, error } = useBlogs();
+  const navigate = useNavigate();
 
   const topBlogs = blogs.slice(0, 12);
+
+  const clickHandler = (blog) => {
+    navigate(`/blogs/${blog.id}`);
+  };
+
+  const [time, setTime] = useState("");
+
+  useEffect(() => {
+    const formatTime = () => {
+      return new Date().toLocaleTimeString("en-US", {
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true,
+      });
+    };
+
+    // Set time immediately when component loads
+    setTime(formatTime());
+
+    // Run this function every 1000 milliseconds (1 second)
+    const timer = setInterval(() => {
+      setTime(formatTime());
+    }, 1000);
+
+    // Stop the timer automatically if the user leaves the page
+    return () => clearInterval(timer);
+  }, []);
 
   return (
     <main>
       {/* Hero */}
       <section className="border-b border-neutral-200">
         <div className="max-w-6xl mx-auto px-6 py-16 md:py-24">
+          <p className="text-2xl font-bold absolute top-30 ">
+            {time}
+          </p>
           <p className="text-sm font-medium tracking-wide uppercase text-neutral-500 mb-4">
             Est. 2026 — Words worth reading
           </p>
@@ -54,7 +87,7 @@ const Home = () => {
         </div>
       </section>
 
-      <Marquee/>
+      <Marquee />
 
       {/* Top blogs */}
       <section className="max-w-6xl mx-auto px-6 py-14">
@@ -88,7 +121,11 @@ const Home = () => {
         {!loading && !error && topBlogs.length > 0 && (
           <div className="blog-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {topBlogs.map((blog) => (
-              <BlogCard key={blog.id} blog={blog} />
+              <BlogCard
+                key={blog.id}
+                blog={blog}
+                onClick={() => clickHandler(blog)}
+              />
             ))}
           </div>
         )}

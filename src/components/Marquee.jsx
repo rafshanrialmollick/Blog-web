@@ -11,3 +11,4 @@ const Marquee = ({ text = "Welcome to my web" }) => {
 };
 
 export default Marquee;
+
